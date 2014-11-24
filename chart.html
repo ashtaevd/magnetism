@@ -20,120 +20,134 @@
 	          	console.log(comments);
 
 	          	var likes = response[i].likes.count;
-	          	console.log(likes);	          	
-	          }
+	          	console.log(likes);	 
 
-	          drawChart(likes, tags, comments);
-
-     		}); //closes instagram JSON
-
-
-
-	    	$('#container').highcharts({
-	        chart: {
-	            zoomType: 'xy'
-	        },
-	        title: {
-	            text: 'Dependancy of Tags, Likes and Comments'
-	        },
-	        subtitle: {
-	            text: 'Source: Instagram'
-	        },
-	        xAxis: [{
-	            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-	                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Yay', '14', '15']
-	        }],
-	        yAxis: [{ // Primary yAxis
-	            labels: {
-	                format: '{value}',
-	                style: {
-	                    color: Highcharts.getOptions().colors[2]
-	                }
-	            },
-	            title: {
-	                text: 'Likes',
-	                style: {
-	                    color: Highcharts.getOptions().colors[2]
-	                }
-	            },
-	            opposite: true
-
-	        }, { // Secondary yAxis
-	            gridLineWidth: 0,
-	            title: {
-	                text: 'Tags',
-	                style: {
-	                    color: Highcharts.getOptions().colors[0]
-	                }
-	            },
-	            labels: {
-	                format: '{value}',
-	                style: {
-	                    color: Highcharts.getOptions().colors[0]
-	                }
-	            }
-
-	        }, { // Tertiary yAxis
-	            gridLineWidth: 0,
-	            title: {
-	                text: 'Comments',
-	                style: {
-	                    color: Highcharts.getOptions().colors[1]
-	                }
-	            },
-	            labels: {
-	                format: '{value}',
-	                style: {
-	                    color: Highcharts.getOptions().colors[1]
-	                }
-	            },
-	            opposite: true
-	        }],
-	        tooltip: {
-	            shared: true
-	        },
-	        legend: {
-	            layout: 'horizontal',
-	            align: 'left',
-	            x: 120,
-	            verticalAlign: 'top',
-	            y: 80,
-	            floating: true,
-	            backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
-	        },
-	        series: [{
-	            name: 'Tags',
-	            type: 'column',
-	            yAxis: 1,
-	            data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4, 66, 140, 150],
-	            // tooltip: {
-	            //     valueSuffix: ' mm'
 	            // }
 
-	        }, {
-	            name: 'Comments',
-	            type: 'spline',
-	            yAxis: 2,
-	            data: [1016, 1016, 1015.9, 1015.5, 1012.3, 1009.5, 1009.6, 1010.2, 1013.1, 1016.9, 1018.2, 1016.7, 1006.6, 1014, 1015],
-	            marker: {
-	                enabled: true
-	            },
-	            dashStyle: 'shortdot',
-	            // tooltip: {
-	            //     valueSuffix: ' mb'
-	            // }
+				var tagCount = []
+	          	var commentCount = []
+	          	var likeCount = []
 
-	        }, {
-	            name: 'Likes',
-	            type: 'spline',
-	            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6, 6.6, 14, 15],
-	            // tooltip: {
-	            //     valueSuffix: ' °C'
-	            // }
-	        }]
-	    });
+	          	// the function
 
+	        	var drawChart = function (likes, tags, comments) {
 
+	        	var likeNumber = likes;
+	        	likeCount.push(likeNumber);
+
+	        	var tagNumber = tags;
+	        	tagCount.push(tagNumber);
+
+	        	var commentNumber = comments;
+	        	commentCount.push(commentNumber);
+	        	//var likeNumber
+	        	//push likeNumber to array of likes/ series[0].data
+
+	        	}; //close function
+
+	        	drawChart(likes, tags, comments);
+
+				// Chart stuff
+
+		    	$('#container').highcharts({
+		        chart: {
+		            zoomType: 'xy'
+		        },
+		        title: {
+		            text: 'Dependancy of Tags, Likes and Comments'
+		        },
+		        subtitle: {
+		            text: 'Source: Instagram / #f4f'
+		        },
+		        xAxis: [{
+		            categories: ['1', '2', '3', '4', '5', '6',
+		                '7', '8', '9', '10', '11', '12', '13', '14', '15']
+		        }],
+		        yAxis: [{ // Primary yAxis
+		            labels: {
+		                format: '{value}',
+		                style: {
+		                    color: Highcharts.getOptions().colors[2]
+		                }
+		            },
+		            title: {
+		                text: 'Likes',
+		                style: {
+		                    color: Highcharts.getOptions().colors[2]
+		                }
+		            },
+		            opposite: true
+
+		        }, { // Secondary yAxis
+		            gridLineWidth: 0,
+		            title: {
+		                text: 'Tags',
+		                style: {
+		                    color: Highcharts.getOptions().colors[0]
+		                }
+		            },
+		            labels: {
+		                format: '{value}',
+		                style: {
+		                    color: Highcharts.getOptions().colors[0]
+		                }
+		            }
+
+		        }, { // Tertiary yAxis
+		            gridLineWidth: 0,
+		            title: {
+		                text: 'Comments',
+		                style: {
+		                    color: Highcharts.getOptions().colors[1]
+		                }
+		            },
+		            labels: {
+		                format: '{value}',
+		                style: {
+		                    color: Highcharts.getOptions().colors[1]
+		                }
+		            },
+		            opposite: true
+		        }],
+		        tooltip: {
+		            shared: true
+		        },
+		        legend: {
+		            layout: 'horizontal',
+		            align: 'left',
+		            x: 120,
+		            verticalAlign: 'top',
+		            y: 80,
+		            floating: true,
+		            backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+		        },
+		        series: [{
+		            name: 'Tags',
+		            type: 'column',
+		            yAxis: 1,
+		            data: tagCount,
+
+		        }, {
+		            name: 'Comments',
+		            type: 'spline',
+		            yAxis: 2,
+		            data: commentCount,
+		            marker: {
+		                enabled: true
+		            },
+		            dashStyle: 'shortdot',
+
+		        }, {
+		            name: 'Likes',
+		            type: 'spline',
+		            data: likeCount,
+
+		        }]
+		    }); //closes the chart stuff
+			
+			} //closes for loop
+
+     	}); //closes instagram JSON
 
     }); //closes jQuery
 
@@ -143,6 +157,6 @@
 		</style>
 	<head>
 	<body>
-		<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+		<div id="container" style="min-width: 310px; height: 600px; margin: 0 auto"></div>
 	</body>
 </html>
