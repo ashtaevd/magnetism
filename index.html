@@ -1,162 +1,328 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
-		<title>Chart</title>
-		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-		<script src="http://code.highcharts.com/highcharts.js"></script>
-		<script src="http://code.highcharts.com/modules/exporting.js"></script>
+
+		<title>Paleomagnetism</title>
+
+		<script src="js/randomColor.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/3.9.0/firebase.js"></script>
 		<script>
 
-		$(document).ready(function(){
+			var config = {
+				apiKey: "AIzaSyDqQHm3_JhUphLOpTjnGYgcGVAyl4TokSk",
+				authDomain: "dipoles-e5698.firebaseapp.com",
+				databaseURL: "https://dipoles-e5698.firebaseio.com",
+				projectId: "dipoles-e5698",
+				storageBucket: "dipoles-e5698.appspot.com",
+				messagingSenderId: "322667055501"
+			};
 
-			$.getJSON('http://cooper-union-instagram-proxy.herokuapp.com/search/tag/f4f', function(response){
+			firebase.initializeApp(config);
+		
+		</script>
 
-				for (var i=0; i<response.length; i++) {
+		<script src="https://aframe.io/releases/0.5.0/aframe.js"></script>
+		<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/stylesheet.css">
 
-	          	var tags = response[i].tags.length;
-	          	console.log(tags);
+		</head>
 
-	          	var comments = response[i].comments.count;
-	          	console.log(comments);
-
-	          	var likes = response[i].likes.count;
-	          	console.log(likes);	 
-
-	            // }
-
-				var tagCount = []
-	          	var commentCount = []
-	          	var likeCount = []
-
-	          	// the function
-
-	        	var drawChart = function (likes, tags, comments) {
-
-	        	var likeNumber = likes;
-	        	likeCount.push(likeNumber);
-
-	        	var tagNumber = tags;
-	        	tagCount.push(tagNumber);
-
-	        	var commentNumber = comments;
-	        	commentCount.push(commentNumber);
-	        	//var likeNumber
-	        	//push likeNumber to array of likes/ series[0].data
-
-	        	}; //close function
-
-	        	drawChart(likes, tags, comments);
-
-				// Chart stuff
-
-		    	$('#container').highcharts({
-		        chart: {
-		            zoomType: 'xy'
-		        },
-		        title: {
-		            text: 'Dependancy of Tags, Likes and Comments'
-		        },
-		        subtitle: {
-		            text: 'Source: Instagram / #f4f'
-		        },
-		        xAxis: [{
-		            categories: ['1', '2', '3', '4', '5', '6',
-		                '7', '8', '9', '10', '11', '12', '13', '14', '15']
-		        }],
-		        yAxis: [{ // Primary yAxis
-		            labels: {
-		                format: '{value}',
-		                style: {
-		                    color: Highcharts.getOptions().colors[2]
-		                }
-		            },
-		            title: {
-		                text: 'Likes',
-		                style: {
-		                    color: Highcharts.getOptions().colors[2]
-		                }
-		            },
-		            opposite: true
-
-		        }, { // Secondary yAxis
-		            gridLineWidth: 0,
-		            title: {
-		                text: 'Tags',
-		                style: {
-		                    color: Highcharts.getOptions().colors[0]
-		                }
-		            },
-		            labels: {
-		                format: '{value}',
-		                style: {
-		                    color: Highcharts.getOptions().colors[0]
-		                }
-		            }
-
-		        }, { // Tertiary yAxis
-		            gridLineWidth: 0,
-		            title: {
-		                text: 'Comments',
-		                style: {
-		                    color: Highcharts.getOptions().colors[1]
-		                }
-		            },
-		            labels: {
-		                format: '{value}',
-		                style: {
-		                    color: Highcharts.getOptions().colors[1]
-		                }
-		            },
-		            opposite: true
-		        }],
-		        tooltip: {
-		            shared: true
-		        },
-		        legend: {
-		            layout: 'horizontal',
-		            align: 'left',
-		            x: 120,
-		            verticalAlign: 'top',
-		            y: 80,
-		            floating: true,
-		            backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
-		        },
-		        series: [{
-		            name: 'Tags',
-		            type: 'column',
-		            yAxis: 1,
-		            data: tagCount,
-
-		        }, {
-		            name: 'Comments',
-		            type: 'spline',
-		            yAxis: 2,
-		            data: commentCount,
-		            marker: {
-		                enabled: true
-		            },
-		            dashStyle: 'shortdot',
-
-		        }, {
-		            name: 'Likes',
-		            type: 'spline',
-		            data: likeCount,
-
-		        }]
-		    }); //closes the chart stuff
-			
-			} //closes for loop
-
-     	}); //closes instagram JSON
-
-    }); //closes jQuery
-
-    	</script>
-		<style>
-
-		</style>
-	<head>
 	<body>
-		<div id="container" style="min-width: 310px; height: 600px; margin: 0 auto"></div>
+
+		<div id = "scoreboard" class = "invisible">
+
+			<p class = "title"> 
+				Scoreboard
+			</p>
+
+		</div>
+
+		<div id = "game-plane">
+			<a-scene>
+
+				<a-assets>
+					<img id="rift" src="rift.png">
+					<a-asset-item id="rock-obj" src="assets/SA_rock 1.obj"></a-asset-item>
+					<img id="rock-texture" src="assets/rocktexture.tga.png">
+					<img id="lava-texture" src="assets/lava.png">
+				</a-assets>
+
+				<!-- <a-sky color="#6EBAA7"></a-sky> -->
+				<a-sky src="#rift"></a-sky>
+				<!-- <a-entity obj-model="obj: #rock-obj" material="src: #rock-texture" position="0 5 0"></a-entity> -->
+				<!-- <a-plane color="#033e6d" height="20" width="20" rotation="-90 0 0"></a-plane> -->
+				<!-- <a-plane texture="src: #lava-texture" height="20" width="20" rotation="-90 0 0"></a-plane> -->
+
+				<a-image src="#lava-texture" rotation="-90 0 0" position="0 -1 0"scale="40 40 40" ></a-image>
+				<a-entity light="type: ambient; color: #d0fbf9"></a-entity>
+				<a-entity light="type: directional; color: #eb9437; intensity: 100" position="0 -35 0" rotation = "90 0 0"></a-entity>
+
+
+				<a-camera></a-camera>
+
+			</a-scene>
+		</div>
+
+
 	</body>
+
+	<script>
+
+		var playerInfo = {};
+		var usersObject = {};
+
+		var database = firebase.database();
+		var usersRef = database.ref('Players');
+		var playerRef = usersRef.push();
+
+		var playerID
+
+		var scene = document.querySelector('a-scene');
+
+		var radius = 20;
+		var randomX = radius/2 - radius * Math.random();
+		var randomZ = radius/2 - radius * Math.random();
+
+		playerRef.set({
+
+			// id: playerRef.key,
+			position: { "x": randomX, "y": 0.5, "z": randomZ },
+			rotation: { "x": 0, "y": 0, "z": 0 },
+			color: "#ff0000"
+
+		}, initializePlayer);
+
+		function initializePlayer (err) {
+
+			if (err !== null) {
+				console.log('there was an error: ', err)
+				return;
+
+			}
+
+			// Create a unique ID for the main user now that he's initialized.
+			var playerID = playerRef.key;
+			console.log ( "Main player ID is: " + playerID );
+
+			aframeInit(); 
+
+		}
+
+		// Put camera in the exact spot where the new block is
+		usersRef.once('child_added', snap => {
+
+			var snapInfo = snap.val()
+			var camera = document.querySelector('a-camera');
+			camera.setAttribute('position', {"x": snapInfo.position.x, "y": 1, "z": snapInfo.position.z})
+
+		});
+
+		var appendPlayer = function ( aframeID ) {
+
+			var blockEntity = document.createElement('a-entity');
+			blockEntity.setAttribute('dipole', '');
+			scene.appendChild(blockEntity);
+			blockEntity.setAttribute("id", aframeID)
+
+		};
+
+		//Triggers with the initial data AND for newly connected players
+		var childAdded = function () {
+			usersRef.on('child_added', snap => { 
+
+				var playerID = playerRef.key;
+				var snapID = snap.key;
+				var snapInfo = snap.val();
+
+				// Add a block to the scene if the key doesn't match the main player
+				if (snapID != playerID) {
+
+					var scene = document.querySelector('a-scene');
+					appendPlayer (snapID);
+
+					blockInstance = document.querySelector('#' + snapID);
+
+					blockInstance.setAttribute('position', snapInfo["position"] );
+					blockInstance.setAttribute('rotation', snapInfo["rotation"] );
+					document.querySelector('#' + snapID).setAttribute("material", "color", snapInfo.color);
+
+				} 			
+
+			});
+
+		}
+
+
+		usersRef.on('child_changed', snap => {
+
+			var snapID = snap.key;
+			var playerInfo = snap.val();
+
+			if (snapID != playerRef.key) {
+
+				blockInstance = document.querySelector('#' + snapID);
+
+				blockInstance.setAttribute('position', playerInfo["position"] )
+				blockInstance.setAttribute('rotation', playerInfo["rotation"] )
+
+			}
+
+		});
+
+		//triggers once initially, and then with every change
+		usersRef.on('value', snap => { 
+
+			var snapID = snap.key;
+			var usersObject = snap.val(); //returns the object of 'Players,' which contains everyone's ID and subsequent position information
+
+			// console.log( snapID ); //returns "Players" as the key
+
+			// Disconnect and remove
+			// playerRef.onDisconnect().remove();
+
+			// playerRef.onDisconnect().update({
+			// 	onlineState: false
+			// });
+
+		});
+
+		// playerRef.on('child_removed', snap => {
+
+		// 	console.log ("Someone left!")
+
+		// }
+
+		// Passes camera location to the database, creating coordinates for each player.
+	    function cameraLocator(camera){
+
+	        var camPos = camera.getAttribute("position");
+	        var camRot = camera.getAttribute("rotation");
+
+	        // camera.setAttribute("position", {"x": randomX, "y":1.6, "z": randomZ} );
+		    
+		// Reposition camera to the center if too far beyond the limit.
+
+	        var addPlayer = playerRef.update({
+
+				position: {"x": camPos.x, "y": 1, "z": camPos.z},
+				rotation: camRot
+
+			});
+		    
+	    }
+
+		$("document").ready(function() {
+
+	        var scene = document.querySelector('a-scene');
+	        scene.addEventListener('loaded', function (evt) {
+
+				// If the camera position changes, recalculate distance between camera and objects.
+				var camera = document.querySelector('a-camera');
+				camera.addEventListener('componentchanged', function (evt) {
+
+					if (evt.detail.name === "position" || "rotation") {
+
+						cameraLocator(camera);
+
+					}
+				});
+			});
+	    });
+
+
+		function createAnimation(event){
+
+			var anim = document.createElement("a-animation");
+			anim.setAttribute("begin", event);
+			return anim;
+
+		}
+
+		function aframeInit () {
+
+				var scene = document.querySelector('a-scene');
+
+				AFRAME.registerComponent('red-block', {
+
+					init: function () {
+
+	          			this.el.setAttribute("geometry", { "primitive": "box" });
+	         			this.el.setAttribute("material", "color", "#ff0000");
+	         			this.el.setAttribute("geometry", {"depth": .5, "height": 1.5, "width": .5} );
+	         			this.el.setAttribute('position', { x: 0, y: 1.5, z: 0 });
+					
+					},
+
+				});	
+
+				AFRAME.registerComponent('blue-block', {
+
+					init: function () {
+						
+	          			this.el.setAttribute("geometry", { "primitive": "box" });
+	         			this.el.setAttribute("material", "color", "#0000ff");
+	         			this.el.setAttribute("geometry", {"depth": .5, "height": 1.5, "width": .5} );
+	         			this.el.setAttribute('position', { x: 0, y: 0, z: 0 });
+
+					},
+
+				});	
+
+			    AFRAME.registerComponent('dipole', {
+
+					schema: {
+
+					},
+
+					init: function () {
+
+	          			var self = this;
+      					var redEntity = document.createElement('a-entity');
+          				redEntity.setAttribute('red-block', true);
+          				var blueEntity = document.createElement('a-entity');
+          				blueEntity.setAttribute('blue-block', true);
+
+          				self.el.appendChild(blueEntity);
+          				self.el.appendChild(redEntity);
+
+						
+
+					},
+
+					update: function () {
+
+					},
+
+					tick: function (time, timeDelta) {
+
+					}
+
+				});
+
+				childAdded();
+				// console.log (playerID)
+
+			}
+
+			</script>
+			<script>
+
+				$(document).keydown(function(e) {
+			     if (e.keyCode == 192) { 
+
+			        $( "#scoreboard" ).removeClass( "invisible" ).addClass( "visible" );
+
+			    }
+			});
+
+			$(document).keyup(function(e) {
+			     if (e.keyCode == 192) {
+
+			        $( "#scoreboard" ).removeClass( "visible" ).addClass( "invisible" );
+
+			    }
+			});
+
+			</script>
+			
 </html>
